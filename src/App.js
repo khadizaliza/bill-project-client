@@ -4,7 +4,9 @@ import logo from './image/bill.webp';
 import { nanoid } from 'nanoid';
 import './App.css';
 import data from './bill.data.json';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
+import ReadOnlyRow from "./components/ReadOnlyRow";
+import EditableRow from "./components/EditableRow";
 
 const App = () => {
   const [contacts, setContacts] = useState(data);
@@ -30,6 +32,17 @@ const App = () => {
     newFormData[fieldName] = fieldValue;
     setAddFormData(newFormData);
   };
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...editFormData };
+    newFormData[fieldName] = fieldValue;
+
+    setEditFormData(newFormData);
+  };
   const handleAddFormSubmit = (event) => {
     event.preventDefult();
     const newContact = {
@@ -42,6 +55,48 @@ const App = () => {
     const newContacts = [...contacts, newContact];
     setContacts(newContacts);
   }
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+   
+    const editedContact = {
+      id: editContactId,
+      fullName: editFormData.fullName,
+      email: editFormData.email,
+       phone: editFormData.phoneNumber,
+       paidAmount: editFormData.paidAmount
+    };
+    const newContacts = [...contacts];
+    const index = contacts.findIndex((contact) => contact.id === editContactId);
+    newContacts[index] = editedContact;
+    setContacts(newContacts);
+    setEditContactId(null);
+  };
+
+  const handleEditClick = (event, contact) => {
+    event.preventDefault();
+    setEditContactId(contact.id);
+
+    const formValues = {
+      fullName: contact.fullName,
+      address: contact.address,
+      phoneNumber: contact.phoneNumber,
+      email: contact.email,
+    };
+
+    setEditFormData(formValues);
+  };
+  const handleCancelClick = () => {
+    setEditContactId(null);
+  };
+  const handleDeleteClick = (contactId) => {
+    const newContacts = [...contacts];
+
+    const index = contacts.findIndex((contact) => contact.id === contactId);
+
+    newContacts.splice(index, 1);
+
+    setContacts(newContacts);
+  };
   return (
     <div>
       <div  className="header">
@@ -55,6 +110,7 @@ const App = () => {
        <input type="search" placeholder='Search' />
        <button className='btn btn-info'>Add New Bill</button>
       </div>
+      <form onSubmit={handleEditFormSubmit}>
       <table>
         <thead>
           <tr>
@@ -63,21 +119,32 @@ const App = () => {
             <th>Email</th>
             <th>Phone</th>
             <th>Paid Amount</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {contacts.map((contact) => (
-            <tr>
-            
-            <td>{contact.fullName}</td>
-            <td>{contact.email}</td>
-            <td>{contact.phone}</td>
-            <td>{contact.paidAmount}</td>
-          </tr>
-          ))}
+        {contacts.map((contact) => (
+              <Fragment>
+                {editContactId === contact.id ? (
+                  <EditableRow
+                    editFormData={editFormData}
+                    handleEditFormChange={handleEditFormChange}
+                    handleCancelClick={handleCancelClick}
+                  />
+                ) : (
+                  <ReadOnlyRow
+                    contact={contact}
+                    handleEditClick={handleEditClick}
+                    handleDeleteClick={handleDeleteClick}
+                  />
+                )}
+              </Fragment>
+            ))}
           
         </tbody>
       </table>
+
+      </form>
       <h4>Add Contact</h4>
       <form onSubmit={handleAddFormSubmit}>
         
