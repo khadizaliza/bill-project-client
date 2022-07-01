@@ -24,7 +24,7 @@ const App = () => {
     paidAmount: "",
   });
   const [editContactId, setEditContactId] = useState(null);
-  const handleAddFormChange = (event) =>{
+  const handleAddFormChange = (event) => {
     event.preventDefult();
     const fieldName = event.target.getattribute('name');
     const fieldValue = event.target.value;
@@ -78,9 +78,11 @@ const App = () => {
 
     const formValues = {
       fullName: contact.fullName,
-      address: contact.address,
-      phoneNumber: contact.phoneNumber,
       email: contact.email,
+      phone: contact.phone,
+      paidAmount: contact.paidAmount,
+     
+      
     };
 
     setEditFormData(formValues);
@@ -103,13 +105,13 @@ const App = () => {
       <img src={logo} alt="" />
       <p>Paid Total: 0</p>
       </div>
-      
-      <div className='app-container'>
       <div className='search-bar'>
        <h6>Billings </h6>
        <input type="search" placeholder='Search' />
        <button className='btn btn-info'>Add New Bill</button>
       </div>
+      <div className='app-container'>
+      
       <form onSubmit={handleEditFormSubmit}>
       <table>
         <thead>
@@ -145,13 +147,42 @@ const App = () => {
       </table>
 
       </form>
-      <h4>Add Contact</h4>
+
+      <h4>Add a Contact</h4>
       <form onSubmit={handleAddFormSubmit}>
         
-        <input type="text" name='fullName' required="required" placeholder='Enter a name' onChange={handleAddFormChange}/>
-        <input type="text" name='email' required="required" placeholder='Enter a email' onChange={handleAddFormChange} />
-        <input type="text" name='phone' required="required" placeholder='Enter a phone' onChange={handleAddFormChange} />
-        <input type="text" name='paidAmount' required="required" placeholder='Enter a paidAmount' onChange={handleAddFormChange} />
+        <input 
+        type="text" 
+        name='fullName' 
+        required="required" 
+        placeholder='Enter a name' 
+        onChange={handleAddFormChange}
+        />
+
+        <input 
+        type="email" 
+        name='email' 
+        required="required" 
+        placeholder='Enter a email' 
+        onChange={handleAddFormChange} 
+        />
+
+        <input 
+        type="text" 
+        name='phone' 
+        required="required" 
+        placeholder='Enter a phone' 
+        onChange={handleAddFormChange} 
+        />
+
+        <input 
+        type="text" 
+        name='paidAmount' 
+        required="required" 
+        placeholder='Enter a paidAmount' 
+        onChange={handleAddFormChange} 
+        />
+
         <button type='submit'>Add</button>
       </form>
 
