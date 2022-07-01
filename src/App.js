@@ -54,7 +54,7 @@ const App = () => {
     };
     const newContacts = [...contacts, newContact];
     setContacts(newContacts);
-  }
+  };
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
    
@@ -62,7 +62,7 @@ const App = () => {
       id: editContactId,
       fullName: editFormData.fullName,
       email: editFormData.email,
-       phone: editFormData.phoneNumber,
+       phone: editFormData.phone,
        paidAmount: editFormData.paidAmount
     };
     const newContacts = [...contacts];
@@ -126,6 +126,7 @@ const App = () => {
         </thead>
         <tbody>
         {contacts.map((contact) => (
+          
               <Fragment>
                 {editContactId === contact.id ? (
                   <EditableRow
@@ -141,12 +142,12 @@ const App = () => {
                   />
                 )}
               </Fragment>
-            ))}
+             ))}
           
         </tbody>
       </table>
-
       </form>
+      
 
       <h4>Add a Contact</h4>
       <form onSubmit={handleAddFormSubmit}>
